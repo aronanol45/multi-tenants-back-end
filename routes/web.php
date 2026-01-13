@@ -3,9 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TenantFormController;
 
+use App\Http\Controllers\DashboardController;
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
 Route::get('/tenants/create', [TenantFormController::class, 'create'])->name('tenants.create');
@@ -15,4 +19,5 @@ Route::get('/tenants/edit/{tenant}', [TenantFormController::class, 'edit'])->nam
 Route::put('/tenants/{tenant}', [TenantFormController::class, 'update'])->name('tenants.update');
 Route::get('/tenants', [TenantFormController::class, 'index'])->name('tenants.index');
 Route::get('/tenants/{tenant}', [TenantFormController::class, 'show'])->name('tenants.show');
+Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
 
