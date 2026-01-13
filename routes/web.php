@@ -14,4 +14,5 @@ Route::delete('/tenants/{tenant}', [TenantFormController::class, 'destroy'])->na
 Route::get('/tenants/edit/{tenant}', [TenantFormController::class, 'edit'])->name('tenants.edit');
 Route::put('/tenants/{tenant}', [TenantFormController::class, 'update'])->name('tenants.update');
 Route::get('/tenants', [TenantFormController::class, 'index'])->name('tenants.index');
+Route::get('/tenants/{tenant}', [TenantFormController::class, 'show'])->name('tenants.show');
 

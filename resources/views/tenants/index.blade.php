@@ -44,6 +44,7 @@
                         @endif
                     </td>
                     <td>
+                        <a href="{{ route('tenants.show', $tenant->id) }}" style="color: #2563eb; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">View</a>
                         <a href="{{ route('tenants.edit', $tenant->id) }}" style="color: #2563eb; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">Edit</a>
                         <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Are you sure?');" style="display:inline;">
                             @csrf
