@@ -67,6 +67,11 @@ class TenantFormController extends Controller
         return view('tenants.edit', compact('tenant'));
     }
 
+    public function show(Tenant $tenant)
+    {
+        return view('tenants.show', compact('tenant'));
+    }
+
     public function update(Request $request, Tenant $tenant)
     {
         if ($request->has('subdomain')) {

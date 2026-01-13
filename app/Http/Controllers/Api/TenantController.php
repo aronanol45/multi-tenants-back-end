@@ -27,6 +27,9 @@ class TenantController extends Controller
         // It's ambiguous what they send *to* the API. I will assume standard Laravel snake_case input for now 
         // OR map the keys manually if they send the exact JSON structure.
         // Let's support the snake_case keys for the database but check inputs.
+        if ($request->has('subdomain')) {
+            $request->merge(['subdomain' => Str::slug($request->input('subdomain'))]);
+        }
         
         $validator = Validator::make($request->all(), [
             'subdomain' => 'required|unique:tenants,subdomain',
@@ -53,6 +56,21 @@ class TenantController extends Controller
         // If it's a string path (from the example JSON), it will be passed through validated() if rule allows string.
         
         $tenant = Tenant::create($data);
+
+        return new TenantResource($tenant);
+    }
+
+    // GET /api/tenants/{id}
+    public function show($id)
+    {
+        $tenant = Tenant::where('id', $id)
+            ->orWhere('domain', $id)
+            ->orWhere('subdomain', $id)
+            ->first();
+
+        if (!$tenant) {
+            return response()->json(['message' => 'Tenant not found'], 404);
+        }
 
         return new TenantResource($tenant);
     }
