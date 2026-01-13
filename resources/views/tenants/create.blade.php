@@ -44,6 +44,7 @@
             <th>Domain</th>
             <th>Subdomain</th>
             <th>Logo</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -65,6 +66,13 @@
                     @else
                         No Logo
                     @endif
+                </td>
+                <td>
+                    <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" style="color: red;">Delete</button>
+                    </form>
                 </td>
             </tr>
         @endforeach

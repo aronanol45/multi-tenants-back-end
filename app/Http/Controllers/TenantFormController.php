@@ -43,4 +43,10 @@ class TenantFormController extends Controller
 
         return redirect()->back()->with('success', 'Tenant added successfully!');
     }
+
+    public function destroy(Tenant $tenant)
+    {
+        $tenant->delete();
+        return redirect()->back()->with('success', 'Tenant deleted successfully!');
+    }
 }
