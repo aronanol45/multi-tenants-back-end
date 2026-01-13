@@ -9,7 +9,8 @@ class TenantFormController extends Controller
 {
     public function create()
     {
-        return view('tenants.create');
+        $tenants = Tenant::all();
+        return view('tenants.create', compact('tenants'));
     }
 
     public function store(Request $request)
