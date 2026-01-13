@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tenant;
+use Illuminate\Support\Str;
 
 class TenantFormController extends Controller
 {
@@ -20,6 +21,10 @@ class TenantFormController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->has('subdomain')) {
+            $request->merge(['subdomain' => Str::slug($request->input('subdomain'))]);
+        }
+        
         $request->validate([
             'subdomain' => 'required|unique:tenants,subdomain',
             'domain' => 'required|unique:tenants,domain',
@@ -64,6 +69,10 @@ class TenantFormController extends Controller
 
     public function update(Request $request, Tenant $tenant)
     {
+        if ($request->has('subdomain')) {
+            $request->merge(['subdomain' => Str::slug($request->input('subdomain'))]);
+        }
+
         $request->validate([
             'subdomain' => 'required|unique:tenants,subdomain,' . $tenant->id,
             'domain' => 'required|unique:tenants,domain,' . $tenant->id,
