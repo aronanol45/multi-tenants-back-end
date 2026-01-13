@@ -1,0 +1,58 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="header-actions">
+        <h1>Existing Tenants</h1>
+        <a href="{{ route('tenants.create') }}" class="btn-primary">Create New Tenant</a>
+    </div>
+
+    @if(session('success'))
+        <div style="background-color: #d1fae5; color: #065f46; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem;">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table border="0" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Domain</th>
+                <th>Subdomain</th>
+                <th>Logo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($tenants as $tenant)
+                <tr>
+                    <td>{{ $tenant->id }}</td>
+                    <td>{{ $tenant->name }}</td>
+                    <td>
+                        @if(App::environment('local'))
+                            <a href="http://{{ $tenant->subdomain }}.companynameapi.local" target="_blank" style="color: #2563eb; text-decoration: none;">{{ $tenant->domain }} (Dev)</a>
+                        @else
+                            <a href="http://{{ $tenant->domain }}" target="_blank" style="color: #2563eb; text-decoration: none;">{{ $tenant->domain }}</a>
+                        @endif
+                    </td>
+                    <td>{{ $tenant->subdomain }}</td>
+                    <td>
+                        @if($tenant->tenant_logo)
+                            <img src="{{ Str::startsWith($tenant->tenant_logo, 'logos/') ? asset('storage/' . $tenant->tenant_logo) : $tenant->tenant_logo }}" alt="Logo" width="40" style="border-radius: 4px;">
+                        @else
+                            <span style="color: #9ca3af;">No Logo</span>
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('tenants.edit', $tenant->id) }}" style="color: #2563eb; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">Edit</a>
+                        <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Are you sure?');" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endsection
