@@ -14,15 +14,18 @@ class LargeScaleSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->command->info('Seeding 650 tenants...');
-        Tenant::factory()->count(650)->create();
+        $tenantCount = 650;
+        $productCount = 20000;
+
+        $this->command->info("Seeding $tenantCount tenants...");
+        Tenant::factory()->count($tenantCount)->create();
         $this->command->info('Tenants seeded!');
 
-        $this->command->info('Seeding 20,000 products...');
+        $this->command->info("Seeding $productCount products...");
         
         // Chunking creation to avoid memory issues with large counts in one go
         $chunkSize = 1000;
-        $total = 20000;
+        $total = $productCount;
         
         for ($i = 0; $i < $total; $i += $chunkSize) {
             Product::factory()->count($chunkSize)->create();
@@ -31,49 +34,121 @@ class LargeScaleSeeder extends Seeder
 
         $this->command->info('Products seeded!');
 
+        // E-commerce Data Seeding - Bulk Insert Optimization
         $this->command->info('Seeding e-commerce data (Clients, Carts, Purchases)...');
         
-        $productIds = Product::pluck('id');
-
-        // Process tenants in smaller chunks to avoid timeout/memory issues
-        $totalTenants = 650;
+        $productIds = Product::pluck('id')->toArray(); // Cache product IDs
+        $tenantIds = Tenant::pluck('id')->toArray();
+        $totalTenants = count($tenantIds);
+        
+        // Configuration
+        $clientsPerTenant = 10;
+        $batchSize = 50; // Process 50 tenants at a time
+        
         $processed = 0;
-
-        Tenant::chunk(5, function ($tenants) use ($productIds, &$processed) {
-            foreach ($tenants as $tenant) {
-                // Create Clients
-                $clients = \App\Models\Client::factory(10)->create(['tenant_id' => $tenant->id]);
-
-                foreach ($clients as $client) {
-                    // Create Carts
-                    $carts = \App\Models\Cart::factory(rand(1, 3))->create(['client_id' => $client->id]);
-
-                    foreach ($carts as $cart) {
-                        // Attach Products
-                        $randomProducts = $productIds->random(rand(1, 5));
-                        foreach ($randomProducts as $productId) {
-                            $cart->products()->attach($productId, [
-                                'price' => fake()->randomFloat(2, 10, 100),
-                                'quantity' => rand(1, 3),
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ]);
-                        }
-
-                        // Create Purchase if inactive
-                        if (!$cart->is_active) {
-                            $totalAmount = $cart->products()->sum(\Illuminate\Support\Facades\DB::raw('cart_products.price * cart_products.quantity'));
-                            \App\Models\Purchase::factory()->create([
-                                'cart_id' => $cart->id,
-                                'total_amount' => $totalAmount,
-                            ]);
-                        }
-                    }
+        
+        // Chunk the Tenant IDs array manually to control batching
+        foreach (array_chunk($tenantIds, $batchSize) as $tenantIdChunk) {
+            $clientData = [];
+            $cartData = [];
+            $cartProductData = [];
+            $purchaseData = [];
+            
+            $now = now();
+            
+            // 1. Prepare Clients
+            foreach ($tenantIdChunk as $tenantId) {
+                for ($i = 0; $i < $clientsPerTenant; $i++) {
+                    $clientData[] = [
+                        'tenant_id' => $tenantId,
+                        'name' => fake()->name(),
+                        'email' => fake()->unique()->safeEmail(),
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
                 }
             }
-            $processed += $tenants->count();
-            $this->command->info("Seeded e-commerce data for $processed / 650 tenants...");
-        });
+            
+            // Bulk Insert Clients
+            \Illuminate\Support\Facades\DB::table('clients')->insert($clientData);
+            
+            // Retrieve newly created Client IDs to link Carts
+            // Assumes sequential IDs. For robustness with UUIDs, we'd need a different approach, 
+            // but for standard auto-increment in a focused seeder, fetching max ID or querying back is typical.
+            // A safer way is to fetch clients for these tenants.
+            $clients = \App\Models\Client::whereIn('tenant_id', $tenantIdChunk)->pluck('id')->toArray();
+            
+            // 2. Prepare Carts
+            $tempCarts = []; // To keep track for products binding
+            foreach ($clients as $clientId) {
+                $numCarts = rand(1, 3);
+                for ($k = 0; $k < $numCarts; $k++) {
+                    $isActive = (rand(1, 10) > 3); // 70% active? Or random.
+                    // factory logic was standard.
+                    
+                    $cartData[] = [
+                        'client_id' => $clientId,
+                        'is_active' => (bool)rand(0, 1),
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
+                }
+            }
+            
+            // Bulk Insert Carts
+            \Illuminate\Support\Facades\DB::table('carts')->insert($cartData);
+            
+            // Retrieve Carts for these clients
+            $carts = \App\Models\Cart::whereIn('client_id', $clients)->get(); 
+            // Use get() to check is_active for Purchases
+            
+            // 3. Prepare Cart Products & Purchases
+            foreach ($carts as $cart) {
+                $numProducts = rand(1, 5);
+                $cartTotal = 0;
+                
+                for ($p = 0; $p < $numProducts; $p++) {
+                    $prodId = $productIds[array_rand($productIds)];
+                    $price = fake()->randomFloat(2, 10, 100);
+                    $qty = rand(1, 3);
+                    $lineTotal = $price * $qty;
+                    $cartTotal += $lineTotal;
+                    
+                    $cartProductData[] = [
+                        'cart_id' => $cart->id,
+                        'product_id' => $prodId,
+                        'price' => $price,
+                        'quantity' => $qty,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
+                }
+                
+                // Prepare Purchase if cart is not active (i.e. completed)
+                if (!$cart->is_active) {
+                    $purchaseData[] = [
+                        'cart_id' => $cart->id,
+                        'total_amount' => $cartTotal,
+                        'status' => 'completed',
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
+                }
+            }
+            
+            // Bulk Insert Pivot Data (Chunks of 1000 to be safe)
+            foreach (array_chunk($cartProductData, 1000) as $chunk) {
+                \Illuminate\Support\Facades\DB::table('cart_products')->insert($chunk);
+            }
+            
+            // Bulk Insert Purchases
+             foreach (array_chunk($purchaseData, 1000) as $chunk) {
+                \Illuminate\Support\Facades\DB::table('purchases')->insert($chunk);
+            }
+            
+            $processed += count($tenantIdChunk);
+            $this->command->info("Seeded e-commerce data for $processed / $totalTenants tenants...");
+        }
 
         $this->command->info('E-commerce data seeded!');
     }
