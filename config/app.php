@@ -14,6 +14,8 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    
+    'frontend_root_domain' => env('FRONTEND_ROOT_DOMAIN', 'glaive.ch'),
 
     /*
     |--------------------------------------------------------------------------
