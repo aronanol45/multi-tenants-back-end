@@ -18,26 +18,26 @@ class ProductFactory extends Factory
     {
         return [
             'name' => [
-                'en' => fake()->words(3, true),
-                'de' => fake('de_CH')->words(3, true),
-                'fr' => fake('fr_CH')->words(3, true),
+                'en' => $this->faker->words(3, true),
+                'de' => \Faker\Factory::create('de_CH')->words(3, true),
+                'fr' => \Faker\Factory::create('fr_CH')->words(3, true),
             ],
             'category_name' => [
-                'en' => fake()->word(),
-                'de' => fake('de_CH')->word(),
-                'fr' => fake('fr_CH')->word(),
+                'en' => $this->faker->word(),
+                'de' => \Faker\Factory::create('de_CH')->word(),
+                'fr' => \Faker\Factory::create('fr_CH')->word(),
             ],
-            'price' => fake()->randomFloat(2, 10, 1000),
+            'price' => $this->faker->randomFloat(2, 10, 1000),
             'currency' => 'CHF',
             'description' => [
-                'en' => fake()->paragraph(),
-                'de' => fake('de_CH')->paragraph(),
-                'fr' => fake('fr_CH')->paragraph(),
+                'en' => $this->faker->paragraph(),
+                'de' => \Faker\Factory::create('de_CH')->paragraph(),
+                'fr' => \Faker\Factory::create('fr_CH')->paragraph(),
             ],
             'benefits' => [
-                'en' => fake()->sentences(3),
-                'de' => fake('de_CH')->sentences(3),
-                'fr' => fake('fr_CH')->sentences(3),
+                'en' => $this->faker->sentences(3),
+                'de' => \Faker\Factory::create('de_CH')->sentences(3),
+                'fr' => \Faker\Factory::create('fr_CH')->sentences(3),
             ],
         ];
     }
