@@ -27,7 +27,7 @@ class TenantFormController extends Controller
         
         $request->validate([
             'subdomain' => 'required|unique:tenants,subdomain',
-            'domain' => 'required|unique:tenants,domain',
+            'custom_domain' => 'nullable|unique:tenants,custom_domain',
             'name' => 'required|string|max:255',
             'tenant_logo' => 'nullable|image|max:2048',
             'meta_description_en' => 'nullable|string',
@@ -35,7 +35,7 @@ class TenantFormController extends Controller
             'meta_description_fr' => 'nullable|string',
         ]);
 
-        $data = $request->only(['subdomain', 'domain', 'name']);
+        $data = $request->only(['subdomain', 'custom_domain', 'name']);
 
         // Construct meta_description JSON
         $metaDescription = [];
@@ -80,7 +80,7 @@ class TenantFormController extends Controller
 
         $request->validate([
             'subdomain' => 'required|unique:tenants,subdomain,' . $tenant->id,
-            'domain' => 'required|unique:tenants,domain,' . $tenant->id,
+            'custom_domain' => 'nullable|unique:tenants,custom_domain,' . $tenant->id,
             'name' => 'required|string|max:255',
             'tenant_logo' => 'nullable|image|max:2048',
             'meta_description_en' => 'nullable|string',
@@ -88,7 +88,7 @@ class TenantFormController extends Controller
             'meta_description_fr' => 'nullable|string',
         ]);
 
-        $data = $request->only(['subdomain', 'domain', 'name']);
+        $data = $request->only(['subdomain', 'custom_domain', 'name']);
 
         // Construct meta_description JSON
         $metaDescription = [];

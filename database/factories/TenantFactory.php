@@ -21,17 +21,15 @@ class TenantFactory extends Factory
 
         $baseUrl = config('app.url');
         $logos = [
-            $baseUrl . "/storage/logos/JfRvjsPQWG49xD0rRixjUlEWIjniLzCA4D5VrW3Q.jpg",
-            $baseUrl . "/storage/logos/b8dwaXRDGBi3nokfMqEfjcb9HZmBABx656qPyO9H.jpg",
-            $baseUrl . "/storage/logos/Of1iMqt5Z7ciERV0rjl5P4GMy1waWoh9u5DlrckJ.png",
-            $baseUrl . "/storage/logos/jFUmREMvzXq7W3gquRYUwlngYqiOg94D9cVXAQrD.webp",
+            $baseUrl . "/storage/logos/kXV3v8VDBCmZjaJ3oGadM3kAQyLaNmRJgK1Ya60f.jpg",
+            $baseUrl . "/storage/logos/PgUOjskXixIcwOKSqz53HmaUcmaORxVcIIhL6bDJ.jpg",
+            $baseUrl . "/storage/logos/xxFlKSiccjCiRepjIEBeHmfosoUjPknxZkgP2ECz.jpg",
         ];
 
         return [
             'name' => $company,
             'subdomain' => $subdomain,
-            'domain' => $subdomain . '.' . config('app.frontend_root_domain', 'glaive.ch'),
-            'tenant_logo' => $this->faker->randomElement($logos),
+            'tenant_logo' => fake()->randomElement($logos),
             'meta_description' => [
                 'en' => $this->faker->sentence(),
                 'de' => \Faker\Factory::create('de_CH')->sentence(),

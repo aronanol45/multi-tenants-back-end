@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+    /** @use HasFactory<\Database\Factories\ProductFactory> */
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -22,6 +24,5 @@ class Product extends Model
         'category_name' => 'array',
         'description' => 'array',
         'benefits' => 'array',
-        'price' => 'decimal:2',
     ];
 }

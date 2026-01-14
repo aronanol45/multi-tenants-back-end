@@ -31,8 +31,9 @@
             </div>
         </div>
         <div>
-            <label>Domain:</label>
-            <input type="text" name="domain" required placeholder="e.g. acme.com">
+            <label>Custom Domain (Optional):</label>
+            <input type="text" name="custom_domain" placeholder="e.g. pfeffer.ch" style="width: 100%;">
+            <small style="color: #6b7280; display: block; margin-top: 4px;">Enter a custom domain if the tenant has one (e.g. pfeffer.ch)</small>
         </div>
         <div>
             <label>Name:</label>
