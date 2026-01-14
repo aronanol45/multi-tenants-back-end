@@ -69,7 +69,20 @@ class TenantFormController extends Controller
 
     public function show(Tenant $tenant)
     {
-        return view('tenants.show', compact('tenant'));
+        // Sales done (Purchases)
+        $purchases = \App\Models\Purchase::whereHas('cart.client', function($q) use ($tenant) {
+            $q->where('tenant_id', $tenant->id);
+        })->with(['cart.client', 'cart.products'])->latest()->paginate(10, ['*'], 'sales_page');
+
+        // Pending sales (Active Carts)
+        $pendingSales = \App\Models\Cart::whereHas('client', function($q) use ($tenant) {
+            $q->where('tenant_id', $tenant->id);
+        })->where('is_active', true)
+          ->with(['client', 'products'])
+          ->latest()
+          ->paginate(10, ['*'], 'pending_page');
+
+        return view('tenants.show', compact('tenant', 'purchases', 'pendingSales'));
     }
 
     public function update(Request $request, Tenant $tenant)

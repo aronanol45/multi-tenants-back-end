@@ -41,19 +41,23 @@
             <input type="file" name="tenant_logo">
         </div>
         
-        <h3>Meta Description</h3>
-        <div>
-            <label>English:</label>
-            <textarea name="meta_description_en" rows="3">{{ old('meta_description_en', $tenant->meta_description['en'] ?? '') }}</textarea>
-        </div>
-        <div>
-            <label>German:</label>
-            <textarea name="meta_description_de" rows="3">{{ old('meta_description_de', $tenant->meta_description['de'] ?? '') }}</textarea>
-        </div>
-        <div>
-            <label>French:</label>
-            <textarea name="meta_description_fr" rows="3">{{ old('meta_description_fr', $tenant->meta_description['fr'] ?? '') }}</textarea>
-        </div>
+        <details style="margin-bottom: 1rem; border: 1px solid #d1d5db; border-radius: 6px; padding: 0.5rem;">
+            <summary style="cursor: pointer; font-weight: 600; padding: 0.5rem;">Meta Description</summary>
+            <div style="padding: 1rem; padding-top: 0;">
+                <div>
+                    <label>English:</label>
+                    <textarea name="meta_description_en" rows="3">{{ old('meta_description_en', $tenant->meta_description['en'] ?? '') }}</textarea>
+                </div>
+                <div>
+                    <label>German:</label>
+                    <textarea name="meta_description_de" rows="3">{{ old('meta_description_de', $tenant->meta_description['de'] ?? '') }}</textarea>
+                </div>
+                <div>
+                    <label>French:</label>
+                    <textarea name="meta_description_fr" rows="3">{{ old('meta_description_fr', $tenant->meta_description['fr'] ?? '') }}</textarea>
+                </div>
+            </div>
+        </details>
         <button type="submit" class="btn-primary">Update Tenant</button>
         <a href="{{ route('tenants.index') }}" style="margin-left: 1rem; color: #6b7280; text-decoration: none;">Cancel</a>
     </form>
