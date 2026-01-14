@@ -16,8 +16,8 @@ class TenantFactory extends Factory
      */
     public function definition(): array
     {
-        $company = fake()->unique()->company();
-        $subdomain = str()->slug($company) . '-' . fake()->unique()->numberBetween(1, 1000000);
+        $company = $this->faker->unique()->company();
+        $subdomain = str()->slug($company) . '-' . $this->faker->unique()->numberBetween(1, 1000000);
 
         $baseUrl = config('app.url');
         $logos = [
@@ -31,9 +31,9 @@ class TenantFactory extends Factory
             'subdomain' => $subdomain,
             'tenant_logo' => fake()->randomElement($logos),
             'meta_description' => [
-                'en' => fake()->sentence(),
-                'de' => fake('de_CH')->sentence(),
-                'fr' => fake('fr_CH')->sentence(),
+                'en' => $this->faker->sentence(),
+                'de' => \Faker\Factory::create('de_CH')->sentence(),
+                'fr' => \Faker\Factory::create('fr_CH')->sentence(),
             ],
         ];
     }
