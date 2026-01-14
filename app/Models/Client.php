@@ -21,4 +21,14 @@ class Client extends Model
     {
         return $this->hasMany(Cart::class);
     }
+
+    public function deliveryAddresses()
+    {
+        return $this->hasMany(DeliveryAddress::class);
+    }
+
+    public function paymentAddresses()
+    {
+        return $this->hasMany(PaymentAddress::class);
+    }
 }

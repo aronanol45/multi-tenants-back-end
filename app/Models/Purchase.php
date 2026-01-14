@@ -16,4 +16,14 @@ class Purchase extends Model
     {
         return $this->belongsTo(Cart::class);
     }
+
+    public function deliveryAddress()
+    {
+        return $this->belongsTo(DeliveryAddress::class);
+    }
+
+    public function paymentAddress()
+    {
+        return $this->belongsTo(PaymentAddress::class);
+    }
 }

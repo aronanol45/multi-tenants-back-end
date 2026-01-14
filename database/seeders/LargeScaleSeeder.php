@@ -78,14 +78,41 @@ class LargeScaleSeeder extends Seeder
             // A safer way is to fetch clients for these tenants.
             $clients = \App\Models\Client::whereIn('tenant_id', $tenantIdChunk)->pluck('id')->toArray();
             
-            // 2. Prepare Carts
-            $tempCarts = []; // To keep track for products binding
+            // 2. Prepare Carts & Addresses
+            $deliveryData = [];
+            $paymentData = [];
+            $cartData = [];
+
             foreach ($clients as $clientId) {
+                // Generate Addresses
+                $numAddresses = rand(1, 2);
+                for ($a = 0; $a < $numAddresses; $a++) {
+                    $deliveryData[] = [
+                        'client_id' => $clientId,
+                        'address_line1' => fake()->streetAddress(),
+                        'address_line2' => rand(0, 1) ? fake()->secondaryAddress() : null,
+                        'city' => fake()->city(),
+                        'postal_code' => fake()->postcode(),
+                        'country' => fake()->country(),
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
+                    
+                    $paymentData[] = [
+                        'client_id' => $clientId,
+                        'address_line1' => fake()->streetAddress(),
+                        'address_line2' => rand(0, 1) ? fake()->secondaryAddress() : null,
+                        'city' => fake()->city(),
+                        'postal_code' => fake()->postcode(),
+                        'country' => fake()->country(),
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
+                }
+
+                // Generate Carts
                 $numCarts = rand(1, 3);
                 for ($k = 0; $k < $numCarts; $k++) {
-                    $isActive = (rand(1, 10) > 3); // 70% active? Or random.
-                    // factory logic was standard.
-                    
                     $cartData[] = [
                         'client_id' => $clientId,
                         'is_active' => (bool)rand(0, 1),
@@ -95,6 +122,23 @@ class LargeScaleSeeder extends Seeder
                 }
             }
             
+            // Bulk Insert Addresses
+            \Illuminate\Support\Facades\DB::table('delivery_addresses')->insert($deliveryData);
+            \Illuminate\Support\Facades\DB::table('payment_addresses')->insert($paymentData);
+
+            // Fetch created Address IDs mapped by Client ID
+            // Since we don't have IDs from insert, we fetch them back.
+            // Assumption: client has addresses.
+            $clientDeliveryAddressMap = \App\Models\DeliveryAddress::whereIn('client_id', $clients)
+                ->select('id', 'client_id')
+                ->get()
+                ->groupBy('client_id');
+                
+            $clientPaymentAddressMap = \App\Models\PaymentAddress::whereIn('client_id', $clients)
+                ->select('id', 'client_id')
+                ->get()
+                ->groupBy('client_id');
+
             // Bulk Insert Carts
             \Illuminate\Support\Facades\DB::table('carts')->insert($cartData);
             
@@ -126,10 +170,17 @@ class LargeScaleSeeder extends Seeder
                 
                 // Prepare Purchase if cart is not active (i.e. completed)
                 if (!$cart->is_active) {
+                    // Pick random address for this client
+                    $clientId = $cart->client_id;
+                    $delAddrId = $clientDeliveryAddressMap[$clientId]->random()->id ?? null;
+                    $payAddrId = $clientPaymentAddressMap[$clientId]->random()->id ?? null;
+
                     $purchaseData[] = [
                         'cart_id' => $cart->id,
                         'total_amount' => $cartTotal,
                         'status' => 'completed',
+                        'delivery_address_id' => $delAddrId,
+                        'payment_address_id' => $payAddrId,
                         'created_at' => $now,
                         'updated_at' => $now,
                     ];
