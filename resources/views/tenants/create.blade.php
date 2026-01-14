@@ -22,8 +22,13 @@
     <form action="{{ route('tenants.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div>
-            <label>Subdomain:</label>
-            <input type="text" name="subdomain" required placeholder="e.g. acme">
+            <label class="block text-sm font-medium text-gray-700">Subdomain:</label>
+            <div style="display: flex; align-items: center; max-width: 300px;">
+                <input type="text" name="subdomain" required placeholder="e.g. acme" style="flex: 1; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                <span style="display: inline-flex; align-items: center; padding: 0.5rem 0.75rem; background-color: #f3f4f6; border: 1px solid #d1d5db; border-left: 0; border-top-right-radius: 4px; border-bottom-right-radius: 4px; color: #6b7280; height: 38px; box-sizing: border-box;">
+                    .{{ config('app.frontend_root_domain') }}
+                </span>
+            </div>
         </div>
         <div>
             <label>Domain:</label>
