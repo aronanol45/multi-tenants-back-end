@@ -39,6 +39,11 @@ class ProductFactory extends Factory
                 'de' => \Faker\Factory::create('de_CH')->sentences(3),
                 'fr' => \Faker\Factory::create('fr_CH')->sentences(3),
             ],
+            'image' => $this->faker->randomElement([
+                '/storage/logos/kXV3v8VDBCmZjaJ3oGadM3kAQyLaNmRJgK1Ya60f.jpg',
+                '/storage/logos/PgUOjskXixIcwOKSqz53HmaUcmaORxVcIIhL6bDJ.jpg',
+                '/storage/logos/xxFlKSiccjCiRepjIEBeHmfosoUjPknxZkgP2ECz.jpg',
+            ]),
         ];
     }
 }

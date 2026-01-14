@@ -95,7 +95,9 @@
             <tbody>
                 @forelse($purchases as $purchase)
                     <tr style="border-bottom: 1px solid #f3f4f6;">
-                        <td style="padding: 0.75rem;">#{{ $purchase->id }}</td>
+                        <td style="padding: 0.75rem;">
+                            <a href="{{ route('purchases.show', $purchase->id) }}" style="color: #2563eb; text-decoration: none; font-weight: 600;">#{{ $purchase->id }}</a>
+                        </td>
                         <td style="padding: 0.75rem;">
                             <div>{{ $purchase->cart->client->name }}</div>
                             <div style="font-size: 0.75rem; color: #6b7280;">{{ $purchase->cart->client->email }}</div>

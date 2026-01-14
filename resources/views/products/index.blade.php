@@ -20,13 +20,18 @@
         <tbody>
             @foreach($products as $product)
                 <tr>
-                    <td>{{ $product->id }}</td>
+                    <td>
+                        <a href="{{ route('products.show', $product) }}" style="font-weight: 500; color: #2563eb; text-decoration: none;">
+                            {{ $product->id }}
+                        </a>
+                    </td>
                     <td>{{ $product->name['en'] ?? (is_array($product->name) ? reset($product->name) : $product->name) }}</td>
                     <td>{{ $product->category_name['en'] ?? (is_array($product->category_name) ? reset($product->category_name) : $product->category_name) }}</td>
                     <td>{{ number_format($product->price, 2) }} {{ $product->currency }}</td>
                     <td>{{ $product->created_at->format('d/m/Y') }}</td>
                     <td>
-                        <a href="#" style="color: #2563eb; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">Edit</a>
+                        <a href="{{ route('products.show', $product) }}" style="color: #2563eb; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">View</a>
+                        <a href="#" style="color: #6b7280; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">Edit</a>
                     </td>
                 </tr>
             @endforeach

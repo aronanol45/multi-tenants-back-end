@@ -28,7 +28,11 @@
         <tbody>
             @foreach($tenants as $tenant)
                 <tr>
-                    <td>{{ $tenant->id }}</td>
+                    <td>
+                        <a href="{{ route('tenants.show', $tenant->id) }}" style="font-weight: 500; color: #2563eb; text-decoration: none;">
+                            {{ $tenant->id }}
+                        </a>
+                    </td>
                     <td>{{ $tenant->name }}</td>
                     <td>
                         @php

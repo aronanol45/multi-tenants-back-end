@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TenantFormController;
+use App\Http\Controllers\PurchaseController;
 
 use App\Http\Controllers\DashboardController;
 
@@ -20,4 +21,6 @@ Route::put('/tenants/{tenant}', [TenantFormController::class, 'update'])->name('
 Route::get('/tenants', [TenantFormController::class, 'index'])->name('tenants.index');
 Route::get('/tenants/{tenant}', [TenantFormController::class, 'show'])->name('tenants.show');
 Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
 
