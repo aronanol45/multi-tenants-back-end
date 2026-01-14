@@ -22,5 +22,6 @@ Route::get('/tenants', [TenantFormController::class, 'index'])->name('tenants.in
 Route::get('/tenants/{tenant}', [TenantFormController::class, 'show'])->name('tenants.show');
 Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+Route::get('/carts/{cart}', [App\Http\Controllers\CartController::class, 'show'])->name('carts.show');
 Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
 

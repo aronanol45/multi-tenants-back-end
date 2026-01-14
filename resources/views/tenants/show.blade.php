@@ -140,7 +140,9 @@
             <tbody>
                 @forelse($pendingSales as $cart)
                     <tr style="border-bottom: 1px solid #f3f4f6;">
-                        <td style="padding: 0.75rem;">#{{ $cart->id }}</td>
+                        <td style="padding: 0.75rem;">
+                            <a href="{{ route('carts.show', $cart->id) }}" style="color: #2563eb; text-decoration: none; font-weight: 600;">#{{ $cart->id }}</a>
+                        </td>
                         <td style="padding: 0.75rem;">
                             <div>{{ $cart->client->name }}</div>
                             <div style="font-size: 0.75rem; color: #6b7280;">{{ $cart->client->email }}</div>
