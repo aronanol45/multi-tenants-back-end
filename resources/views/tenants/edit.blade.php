@@ -19,7 +19,7 @@
         
         <div>
             <label>Subdomain:</label>
-            <input type="text" name="subdomain" required value="{{ old('subdomain', $tenant->subdomain) }}">
+            <input type="text" name="subdomain" required value="{{ old('subdomain', $tenant->subdomain) }}" style="width: 100%;">
         </div>
         <div>
             <label>Custom Domain (Optional):</label>

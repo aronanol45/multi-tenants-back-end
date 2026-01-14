@@ -36,7 +36,7 @@
             <small style="color: #6b7280; display: block; margin-top: 4px;">Enter a custom domain if the tenant has one (e.g. pfeffer.ch)</small>
         </div>
         <div>
-            <label>Name:</label>
+            <label>Company Legal Name:</label>
             <input type="text" name="name" required placeholder="e.g. Acme Corp">
         </div>
         <div>
