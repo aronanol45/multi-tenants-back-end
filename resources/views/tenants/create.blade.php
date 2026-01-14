@@ -31,8 +31,9 @@
             </div>
         </div>
         <div>
-            <label>Domain:</label>
-            <input type="text" name="domain" required placeholder="e.g. acme.com">
+            <label>Custom Domain (Optional):</label>
+            <input type="text" name="custom_domain" placeholder="e.g. pfeffer.ch" style="width: 100%;">
+            <small style="color: #6b7280; display: block; margin-top: 4px;">Enter a custom domain if the tenant has one (e.g. pfeffer.ch)</small>
         </div>
         <div>
             <label>Name:</label>
@@ -43,19 +44,23 @@
             <input type="file" name="tenant_logo">
         </div>
         
-        <h3>Meta Description</h3>
-        <div>
-            <label>English:</label>
-            <textarea name="meta_description_en" rows="3"></textarea>
-        </div>
-        <div>
-            <label>German:</label>
-            <textarea name="meta_description_de" rows="3"></textarea>
-        </div>
-        <div>
-            <label>French:</label>
-            <textarea name="meta_description_fr" rows="3"></textarea>
-        </div>
+        <details style="margin-bottom: 1rem; border: 1px solid #d1d5db; border-radius: 6px; padding: 0.5rem;">
+            <summary style="cursor: pointer; font-weight: 600; padding: 0.5rem;">Meta Description</summary>
+            <div style="padding: 1rem; padding-top: 0;">
+                <div>
+                    <label>English:</label>
+                    <textarea name="meta_description_en" rows="3"></textarea>
+                </div>
+                <div>
+                    <label>German:</label>
+                    <textarea name="meta_description_de" rows="3"></textarea>
+                </div>
+                <div>
+                    <label>French:</label>
+                    <textarea name="meta_description_fr" rows="3"></textarea>
+                </div>
+            </div>
+        </details>
         <button type="submit" class="btn-primary">Add Tenant</button>
         <a href="{{ route('tenants.index') }}" style="margin-left: 1rem; color: #6b7280; text-decoration: none;">Cancel</a>
     </form>
