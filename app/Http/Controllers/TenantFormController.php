@@ -10,7 +10,7 @@ class TenantFormController extends Controller
 {
     public function index()
     {
-        $tenants = Tenant::all();
+        $tenants = Tenant::latest()->get();
         return view('tenants.index', compact('tenants'));
     }
 

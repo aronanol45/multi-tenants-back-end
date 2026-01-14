@@ -18,8 +18,9 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Domain</th>
-                <th>Subdomain</th>
                 <th>Logo</th>
+                <th>Creation Date</th>
+                <th>Last Edit</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -35,7 +36,6 @@
                             <a href="http://{{ $tenant->domain }}" target="_blank" style="color: #2563eb; text-decoration: none;">{{ $tenant->domain }}</a>
                         @endif
                     </td>
-                    <td>{{ $tenant->subdomain }}</td>
                     <td>
                         @if($tenant->tenant_logo)
                             <img src="{{ Str::startsWith($tenant->tenant_logo, 'logos/') ? asset('storage/' . $tenant->tenant_logo) : $tenant->tenant_logo }}" alt="Logo" width="40" style="border-radius: 4px;">
@@ -43,6 +43,8 @@
                             <span style="color: #9ca3af;">No Logo</span>
                         @endif
                     </td>
+                    <td>{{ $tenant->created_at->format('d/m/Y') }}</td>
+                    <td>{{ $tenant->updated_at->format('d/m/Y') }}</td>
                     <td>
                         <a href="{{ route('tenants.show', $tenant->id) }}" style="color: #2563eb; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">View</a>
                         <a href="{{ route('tenants.edit', $tenant->id) }}" style="color: #2563eb; margin-right: 0.5rem; text-decoration: none; font-size: 0.875rem;">Edit</a>

@@ -45,7 +45,6 @@
             overflow-y: auto;
         }
         .container {
-            max-width: 900px;
             margin: 0 auto;
             background: white;
             padding: 2rem;
