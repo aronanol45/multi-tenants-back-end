@@ -35,7 +35,11 @@ class LargeScaleSeeder extends Seeder
         
         $productIds = Product::pluck('id');
 
-        Tenant::chunk(50, function ($tenants) use ($productIds) {
+        // Process tenants in smaller chunks to avoid timeout/memory issues
+        $totalTenants = 650;
+        $processed = 0;
+
+        Tenant::chunk(5, function ($tenants) use ($productIds, &$processed) {
             foreach ($tenants as $tenant) {
                 // Create Clients
                 $clients = \App\Models\Client::factory(10)->create(['tenant_id' => $tenant->id]);
@@ -67,6 +71,8 @@ class LargeScaleSeeder extends Seeder
                     }
                 }
             }
+            $processed += $tenants->count();
+            $this->command->info("Seeded e-commerce data for $processed / 650 tenants...");
         });
 
         $this->command->info('E-commerce data seeded!');
