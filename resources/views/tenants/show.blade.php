@@ -18,7 +18,9 @@
                 <h2 style="margin-top: 0; margin-bottom: 1rem;">{{ $tenant->name }}</h2>
                 <p><strong>ID:</strong> {{ $tenant->id }}</p>
                 <p><strong>Subdomain:</strong> {{ $tenant->subdomain }}</p>
-                <p><strong>Domain:</strong> <a href="http://{{ $tenant->domain }}" target="_blank" style="color: #2563eb;">{{ $tenant->domain }}</a></p>
+                @if($tenant->custom_domain)
+                    <p><strong>Custom Domain:</strong> <a href="http://{{ $tenant->custom_domain }}" target="_blank" style="color: #2563eb;">{{ $tenant->custom_domain }}</a></p>
+                @endif
                 
                 @if(App::environment('local'))
                     <p><strong>Dev URL:</strong> <a href="http://{{ $tenant->subdomain }}.companynameapi.local" target="_blank" style="color: #2563eb;">http://{{ $tenant->subdomain }}.companynameapi.local</a></p>
