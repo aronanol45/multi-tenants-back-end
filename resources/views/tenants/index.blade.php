@@ -17,7 +17,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Domain</th>
+                <th>URL</th>
                 <th>Logo</th>
                 <th>Creation Date</th>
                 <th>Last Edit</th>
@@ -30,11 +30,17 @@
                     <td>{{ $tenant->id }}</td>
                     <td>{{ $tenant->name }}</td>
                     <td>
-                        @if(App::environment('local'))
-                            <a href="http://{{ $tenant->subdomain }}.companynameapi.local" target="_blank" style="color: #2563eb; text-decoration: none;">{{ $tenant->domain }} (Dev)</a>
-                        @else
-                            <a href="http://{{ $tenant->domain }}" target="_blank" style="color: #2563eb; text-decoration: none;">{{ $tenant->domain }}</a>
-                        @endif
+                        @php
+                            $url = $tenant->custom_domain 
+                                ? "http://{$tenant->custom_domain}" 
+                                : (App::environment('local') 
+                                    ? "http://{$tenant->subdomain}.companynameapi.local" 
+                                    : "http://{$tenant->subdomain}." . config('app.frontend_root_domain'));
+                            $display = $tenant->custom_domain ?: ($tenant->subdomain . '.' . config('app.frontend_root_domain'));
+                        @endphp
+                        <a href="{{ $url }}" target="_blank" style="color: #2563eb; text-decoration: none;">
+                            {{ $display }}
+                        </a>
                     </td>
                     <td>
                         @if($tenant->tenant_logo)

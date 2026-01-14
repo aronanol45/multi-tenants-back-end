@@ -22,8 +22,9 @@
             <input type="text" name="subdomain" required value="{{ old('subdomain', $tenant->subdomain) }}">
         </div>
         <div>
-            <label>Domain:</label>
-            <input type="text" name="domain" required value="{{ old('domain', $tenant->domain) }}">
+            <label>Custom Domain (Optional):</label>
+            <input type="text" name="custom_domain" value="{{ old('custom_domain', $tenant->custom_domain) }}" placeholder="e.g. pfeffer.ch" style="width: 100%;">
+            <small style="color: #6b7280; display: block; margin-top: 4px;">Enter a custom domain if the tenant has one (e.g. pfeffer.ch)</small>
         </div>
         <div>
             <label>Name:</label>
