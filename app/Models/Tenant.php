@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tenant extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
     protected $fillable = [
         'name',
         'subdomain',
