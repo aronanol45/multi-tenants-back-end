@@ -132,9 +132,9 @@
 @include('partials.sidebar')
 
 <div class="main-content">
-    <div class="container">
+    <section class="container">
         @yield('content')
-    </div>
+    </section>
 </div>
 
 </body>
