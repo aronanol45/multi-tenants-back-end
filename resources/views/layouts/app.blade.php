@@ -12,7 +12,8 @@
             line-height: 1.5;
             margin: 0;
             display: flex;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
         }
         .sidebar {
             width: 250px;
@@ -41,18 +42,21 @@
         }
         .main-content {
             flex-grow: 1;
-            padding: 2rem;
+            padding: 0 2rem 2rem 2rem;
             overflow-y: auto;
+            margin: 2rem 0 0 0;
         }
         .container {
             margin: 0 auto;
-            background: white;
-            padding: 2rem;
+            padding: 0 0rem 2rem 0rem;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            min-height: 100%;
+            overflow: visible;
         }
         h1, h3 {
-            margin-top: 0;
+            margin: 0;
+            padding: 0;
             color: #111827;
         }
         form > div {
@@ -123,7 +127,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 0;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+            padding: 1rem 2rem 1rem 2rem;
+            border-radius: 8px 8px 0 0;
+        }
+
+        summary{
+            position: sticky;
+            top: 81px;
+            z-index: 3;
+            background-color: white;
         }
     </style>
 </head>

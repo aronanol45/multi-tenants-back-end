@@ -40,9 +40,9 @@ class ProductFactory extends Factory
                 'fr' => \Faker\Factory::create('fr_CH')->sentences(3),
             ],
             'image' => $this->faker->randomElement([
-                '/storage/logos/kXV3v8VDBCmZjaJ3oGadM3kAQyLaNmRJgK1Ya60f.jpg',
-                '/storage/logos/PgUOjskXixIcwOKSqz53HmaUcmaORxVcIIhL6bDJ.jpg',
-                '/storage/logos/xxFlKSiccjCiRepjIEBeHmfosoUjPknxZkgP2ECz.jpg',
+                \Illuminate\Support\Facades\Storage::url('logos/kXV3v8VDBCmZjaJ3oGadM3kAQyLaNmRJgK1Ya60f.jpg'),
+                \Illuminate\Support\Facades\Storage::url('logos/PgUOjskXixIcwOKSqz53HmaUcmaORxVcIIhL6bDJ.jpg'),
+                \Illuminate\Support\Facades\Storage::url('logos/xxFlKSiccjCiRepjIEBeHmfosoUjPknxZkgP2ECz.jpg'),
             ]),
         ];
     }

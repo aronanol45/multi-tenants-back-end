@@ -19,11 +19,10 @@ class TenantFactory extends Factory
         $company = $this->faker->unique()->company();
         $subdomain = str()->slug($company) . '-' . $this->faker->unique()->numberBetween(1, 1000000);
 
-        $baseUrl = config('app.url');
         $logos = [
-            $baseUrl . "/storage/logos/kXV3v8VDBCmZjaJ3oGadM3kAQyLaNmRJgK1Ya60f.jpg",
-            $baseUrl . "/storage/logos/PgUOjskXixIcwOKSqz53HmaUcmaORxVcIIhL6bDJ.jpg",
-            $baseUrl . "/storage/logos/xxFlKSiccjCiRepjIEBeHmfosoUjPknxZkgP2ECz.jpg",
+            \Illuminate\Support\Facades\Storage::url('logos/kXV3v8VDBCmZjaJ3oGadM3kAQyLaNmRJgK1Ya60f.jpg'),
+            \Illuminate\Support\Facades\Storage::url('logos/PgUOjskXixIcwOKSqz53HmaUcmaORxVcIIhL6bDJ.jpg'),
+            \Illuminate\Support\Facades\Storage::url('logos/xxFlKSiccjCiRepjIEBeHmfosoUjPknxZkgP2ECz.jpg'),
         ];
 
         return [
